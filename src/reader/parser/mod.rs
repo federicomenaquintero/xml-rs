@@ -194,8 +194,9 @@ pub enum DeclarationSubstate {
 
 #[derive(Clone, PartialEq)]
 pub enum DoctypeSubstate {
+    AfterDoctype,
     InsideName,
-    AfterName,
+    AfterName
 }
 
 #[derive(PartialEq)]
@@ -413,7 +414,7 @@ impl PullParser {
             let name = this.take_buf();
             match name.parse() {
                 Ok(name) => on_name(this, t, name),
-                Err(_) => Some(self_error!(this; "Qualified name is invalid: {}", name))
+                Err(_) => Some(self_error!(this; "Qualified name is invalid: \"{}\"", name))
             }
         };
 

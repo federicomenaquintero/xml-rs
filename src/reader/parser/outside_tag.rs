@@ -81,7 +81,7 @@ impl PullParser {
                         self.into_state(State::InsideProcessingInstruction(ProcessingInstructionSubstate::PIInsideName), next_event),
 
                     Token::DoctypeStart if !self.encountered_element =>
-                        self.into_state(State::InsideDoctype(DoctypeSubstate::InsideName), next_event),
+                        self.into_state(State::InsideDoctype(DoctypeSubstate::AfterDoctype), next_event),
 
                     Token::OpeningTagStart => {
                         // If declaration was not parsed and we have encountered an element,
