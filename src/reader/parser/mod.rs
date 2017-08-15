@@ -200,6 +200,7 @@ pub enum DoctypeSubstate {
 
 #[derive(PartialEq)]
 enum QualifiedNameTarget {
+    DoctypeNameTarget,
     AttributeNameTarget,
     OpeningTagNameTarget,
     ClosingTagNameTarget
