@@ -16,18 +16,22 @@ impl PullParser {
             // Doctype name
             DoctypeSubstate::InsideName => self.read_qualified_name(t, QualifiedNameTarget::DoctypeNameTarget, |this, token, name| {
                 // FIXME: do something with the name?
-                this.lexer.disable_errors();
                 this.into_state_continue(State::InsideDoctype(DoctypeSubstate::AfterName))
             }),
 
             // We read the doctype name
             DoctypeSubstate::AfterName => match t {
+                Token::Whitespace(_) => None,
+
                 Token::TagEnd => {
                     self.lexer.enable_errors();
                     self.into_state_continue(State::OutsideTag)
-                }
+                },
 
-                _ => None
+                _ => {
+                    self.lexer.disable_errors();
+                    None
+                }
             }
         }
     }
