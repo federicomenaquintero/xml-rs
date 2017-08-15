@@ -80,13 +80,8 @@ impl PullParser {
                     Token::ProcessingInstructionStart =>
                         self.into_state(State::InsideProcessingInstruction(ProcessingInstructionSubstate::PIInsideName), next_event),
 
-                    Token::DoctypeStart if !self.encountered_element => {
-                        // We don't have a doctype event so skip this position
-                        // FIXME: update when we have a doctype event
-                        self.next_pos();
-                        self.lexer.disable_errors();
-                        self.into_state(State::InsideDoctype(DoctypeSubstate::InsideName), next_event)
-                    }
+                    Token::DoctypeStart if !self.encountered_element =>
+                        self.into_state(State::InsideDoctype(DoctypeSubstate::InsideName), next_event),
 
                     Token::OpeningTagStart => {
                         // If declaration was not parsed and we have encountered an element,
