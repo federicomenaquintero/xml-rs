@@ -15,7 +15,7 @@ impl PullParser {
 
             // Doctype name
             DoctypeSubstate::InsideName => self.read_qualified_name(t, QualifiedNameTarget::DoctypeNameTarget, |this, token, name| {
-                // FIXME: do something with the name?
+                this.doctype_name = Some(name);
                 this.into_state_continue(State::InsideDoctype(DoctypeSubstate::AfterName))
             }),
 

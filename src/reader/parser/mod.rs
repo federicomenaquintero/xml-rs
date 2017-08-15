@@ -80,6 +80,8 @@ pub struct PullParser {
     est: ElementStack,
     pos: Vec<TextPosition>,
 
+    doctype_name: Option<OwnedName>,
+
     encountered_element: bool,
     parsed_declaration: bool,
     inside_whitespace: bool,
@@ -112,6 +114,8 @@ impl PullParser {
             next_event: None,
             est: Vec::new(),
             pos: vec![TextPosition::new()],
+
+            doctype_name: None,
 
             encountered_element: false,
             parsed_declaration: false,
