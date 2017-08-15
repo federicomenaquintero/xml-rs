@@ -493,6 +493,11 @@ impl PullParser {
         let mut name = self.data.take_element_name().unwrap();
         let mut attributes = self.data.take_attributes();
 
+        // VALID: If we ever become a validating parser, check that
+        // the name is the same as the stored self.doctype_name
+        // if this is the first/toplevel element
+        // https://www.w3.org/TR/REC-xml/#vc-roottype
+
         // check whether the name prefix is bound and fix its namespace
         match self.nst.get(name.borrow().prefix_repr()) {
             Some("") => name.namespace = None,  // default namespace
