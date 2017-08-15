@@ -5,7 +5,8 @@ use reader::lexer::Token;
 
 use super::{
     Result, PullParser, State, ClosingTagSubstate, OpeningTagSubstate,
-    ProcessingInstructionSubstate, DEFAULT_VERSION, DEFAULT_ENCODING, DEFAULT_STANDALONE
+    DoctypeSubstate, ProcessingInstructionSubstate, DEFAULT_VERSION,
+    DEFAULT_ENCODING, DEFAULT_STANDALONE
 };
 
 impl PullParser {
@@ -84,7 +85,7 @@ impl PullParser {
                         // FIXME: update when we have a doctype event
                         self.next_pos();
                         self.lexer.disable_errors();
-                        self.into_state(State::InsideDoctype, next_event)
+                        self.into_state(State::InsideDoctype(DoctypeSubstate::InsideName), next_event)
                     }
 
                     Token::OpeningTagStart => {

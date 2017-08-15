@@ -142,7 +142,7 @@ pub enum State {
     InsideComment,
     InsideCData,
     InsideDeclaration(DeclarationSubstate),
-    InsideDoctype,
+    InsideDoctype(DoctypeSubstate),
     InsideReference(Box<State>)
 }
 
@@ -190,6 +190,12 @@ pub enum DeclarationSubstate {
 
     InsideStandaloneDeclValue,
     AfterStandaloneDeclValue
+}
+
+#[derive(Clone, PartialEq)]
+pub enum DoctypeSubstate {
+    InsideName,
+    AfterName,
 }
 
 #[derive(PartialEq)]
@@ -342,7 +348,7 @@ impl PullParser {
             State::OutsideTag                     => self.outside_tag(t),
             State::InsideProcessingInstruction(s) => self.inside_processing_instruction(t, s),
             State::InsideDeclaration(s)           => self.inside_declaration(t, s),
-            State::InsideDoctype                  => self.inside_doctype(t),
+            State::InsideDoctype(s)               => self.inside_doctype(t, s),
             State::InsideOpeningTag(s)            => self.inside_opening_tag(t, s),
             State::InsideClosingTag(s)            => self.inside_closing_tag_name(t, s),
             State::InsideComment                  => self.inside_comment(t),
