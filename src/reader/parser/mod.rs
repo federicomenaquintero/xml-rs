@@ -200,7 +200,30 @@ pub enum DeclarationSubstate {
 pub enum DoctypeSubstate {
     AfterDoctype,
     InsideName,
-    AfterName
+    AfterName,
+    SystemStarted(SystemStartedSubstate),
+    PublicStarted(PublicStartedSubstate),
+    SystemLiteral,
+    PubidLiteral,
+    InternalSubset
+}
+
+#[derive(Clone, PartialEq)]
+pub enum SystemStartedSubstate {
+    S,
+    SY,
+    SYS,
+    SYST,
+    SYSTE,
+}
+
+#[derive(Clone, PartialEq)]
+pub enum PublicStartedSubstate {
+    P,
+    PU,
+    PUB,
+    PUBL,
+    PUBLI,
 }
 
 #[derive(PartialEq)]
