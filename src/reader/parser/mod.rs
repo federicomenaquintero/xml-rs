@@ -82,6 +82,9 @@ pub struct PullParser {
 
     doctype_name: Option<OwnedName>,
 
+    external_subset_uri: Option<String>,
+    external_subset_pubid: Option<String>,
+
     encountered_element: bool,
     parsed_declaration: bool,
     inside_whitespace: bool,
@@ -116,6 +119,9 @@ impl PullParser {
             pos: vec![TextPosition::new()],
 
             doctype_name: None,
+
+            external_subset_uri: None,
+            external_subset_pubid: None,
 
             encountered_element: false,
             parsed_declaration: false,

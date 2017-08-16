@@ -56,7 +56,7 @@ impl PullParser {
 
             DoctypeSubstate::SystemLiteral => self.read_system_literal(t, |this, value| {
                 let system_literal = value;
-                // FIXME: notify about the system literal
+                this.external_subset_uri = Some(system_literal);
                 this.into_state_continue(State::InsideDoctype(DoctypeSubstate::InternalSubset))
             }),
 
