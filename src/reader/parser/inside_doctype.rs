@@ -54,14 +54,22 @@ impl PullParser {
             DoctypeSubstate::SystemStarted(s) => self.system_started(t, s),
             DoctypeSubstate::PublicStarted(s) => self.public_started(t, s),
 
-            DoctypeSubstate::SystemLiteral => {
-                self.lexer.disable_errors();
-                self.into_state_continue(State::InsideDoctype(DoctypeSubstate::InternalSubset))
+            DoctypeSubstate::SystemLiteral => match t {
+                Token::Whitespace(_) => None,
+
+                _ => {
+                    self.lexer.disable_errors();
+                    self.into_state_continue(State::InsideDoctype(DoctypeSubstate::InternalSubset))
+                }
             },
 
-            DoctypeSubstate::PubidLiteral => {
-                self.lexer.disable_errors();
-                self.into_state_continue(State::InsideDoctype(DoctypeSubstate::InternalSubset))
+            DoctypeSubstate::PubidLiteral => match t {
+                Token::Whitespace(_) => None,
+
+                _ => {
+                    self.lexer.disable_errors();
+                    self.into_state_continue(State::InsideDoctype(DoctypeSubstate::InternalSubset))
+                }
             },
 
             DoctypeSubstate::InternalSubset => match t {
