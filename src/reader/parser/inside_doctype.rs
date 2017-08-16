@@ -54,14 +54,11 @@ impl PullParser {
             DoctypeSubstate::SystemStarted(s) => self.system_started(t, s),
             DoctypeSubstate::PublicStarted(s) => self.public_started(t, s),
 
-            DoctypeSubstate::SystemLiteral => match t {
-                Token::Whitespace(_) => None,
-
-                _ => {
-                    self.lexer.disable_errors();
-                    self.into_state_continue(State::InsideDoctype(DoctypeSubstate::InternalSubset))
-                }
-            },
+            DoctypeSubstate::SystemLiteral => self.read_system_literal(t, |this, value| {
+                let system_literal = value;
+                // FIXME: notify about the system literal
+                this.into_state_continue(State::InsideDoctype(DoctypeSubstate::InternalSubset))
+            }),
 
             DoctypeSubstate::PubidLiteral => match t {
                 Token::Whitespace(_) => None,

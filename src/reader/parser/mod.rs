@@ -512,6 +512,35 @@ impl PullParser {
         }
     }
 
+    fn read_system_literal<F>(&mut self, t: Token, on_value: F) -> Option<Result>
+      where F: Fn(&mut PullParser, String) -> Option<Result> {
+        match t {
+            Token::Whitespace(_) if self.data.quote.is_none() => None,  // skip leading whitespace
+
+            Token::DoubleQuote | Token::SingleQuote => match self.data.quote {
+                None => {  // Entered attribute value
+                    self.data.quote = Some(QuoteToken::from_token(&t));
+                    None
+                }
+                Some(q) if q.as_token() == t => {
+                    self.data.quote = None;
+                    let value = self.take_buf();
+                    on_value(self, value)
+                }
+                _ => {
+                    t.push_to_string(&mut self.buf);
+                    None
+                }
+            },
+
+            // Every character except " and ' and < is okay
+            _  => {
+                t.push_to_string(&mut self.buf);
+                None
+            }
+        }
+    }
+
     fn emit_start_element(&mut self, emit_end_element: bool) -> Option<Result> {
         let mut name = self.data.take_element_name().unwrap();
         let mut attributes = self.data.take_attributes();
