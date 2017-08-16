@@ -200,7 +200,7 @@ pub enum DeclarationSubstate {
 pub enum DoctypeSubstate {
     AfterDoctype,
     InsideName,
-    AfterName,
+    ExternalId,
     SystemStarted(SystemStartedSubstate),
     PublicStarted(PublicStartedSubstate),
     SystemLiteral,

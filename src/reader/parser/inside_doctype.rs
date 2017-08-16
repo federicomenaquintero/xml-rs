@@ -35,11 +35,11 @@ impl PullParser {
             // Doctype name
             DoctypeSubstate::InsideName => self.read_qualified_name(t, QualifiedNameTarget::DoctypeNameTarget, |this, token, name| {
                 this.doctype_name = Some(name);
-                this.into_state_continue(State::InsideDoctype(DoctypeSubstate::AfterName))
+                this.into_state_continue(State::InsideDoctype(DoctypeSubstate::ExternalId))
             }),
 
             // We read the doctype name
-            DoctypeSubstate::AfterName => match t {
+            DoctypeSubstate::ExternalId => match t {
                 Token::Whitespace(_) => None,
 
                 Token::Character(c) if c == 'S' => self.into_state_continue(
